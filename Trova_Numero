@@ -1,0 +1,123 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
+/*funzione che conta gli spazi in una stringa  ---> VERIFICATA! */
+
+int space(char* str) {
+	int i;
+	int j = 0;
+	for(i=0; str[i] != '\0'; i++) {
+		if(str[i] == ' ') 
+			j++;
+	}
+	return j;
+}
+
+int low(char* str) {
+	int i;
+	int j = 0;
+	for(i=0; str[i] != '\0'; i++) {
+		if(str[i] == '-') {
+			j++;
+		}
+	}
+	return j;
+}
+	
+
+
+/*funzione che inserisca val e pos in un array di numeri ---> VERIFICATA! */
+
+int* strtoarr(char* str) {
+	int	l = strlen(str) + 1;
+	int* new = malloc(sizeof(int)*l);
+	char* dup;
+	int i,val;
+	int tmp = 0;
+	int j=0;
+	int k = 1;
+
+	for(i=0; str[i] != '\0'; i++) {
+		if(str[i] != ' ') {
+			dup = strdup(&str[i]);
+			val = atoi(dup);
+			tmp = tmp +val*k;
+			k = 0;
+		}
+		else {
+			new[j] = tmp;
+			k = 1;
+			tmp = 0;
+			j++;
+		}
+	}
+	new[j] = tmp;
+	return new;
+}
+
+int* strtoarr2(char* str) {
+	int  m = low(str); 
+	int	l = strlen(str) + 1 -m ;
+	int* new = malloc(sizeof(int)*l);
+	char* dup;
+	int i,val;
+	int tmp = 0;
+	int j = 0;
+	int k = 1;
+
+	for(i=0; str[i] != '\0'; i++) {
+		if(str[i] != ' ') {
+			dup = strdup(&str[i]);
+			val = atoi(dup);
+			tmp = tmp +val*k;
+			k = 0;
+		}
+		else {
+			if(tmp > 0) {
+				new[j] = tmp;
+				k = 1;
+				tmp = 0;
+				j++;
+			}
+			else {
+				k = 1;
+				tmp = 0;
+			}
+		}
+	}
+	new[j] = tmp;
+	return new;
+}
+
+
+/* costruiamo la funzione trova min che prende i numeri val e li confronta ---> VERIFICATA!*/
+
+int arrmin(char* val, char* pos) {
+	int* VAL = strtoarr(val);
+	int* POS = strtoarr2(pos);
+	int lv = space(val) + 1;
+	int lp = space(pos) + 1;
+	int i,p;
+	int min = 65535;
+
+	for(i=0; i<lp; i++) {
+		if(POS[i] < lv && VAL[POS[i]] < min && POS[i]) {
+			min = VAL[POS[i]];
+		}
+	}
+	return min;
+}
+		
+		
+	
+			
+int main () {
+	char* val = {"4 5 6 7 8 1 -10 11 15"};
+	char* pos = {"0 1 2 3 4 5 6 7 8 9"};
+	printf("%i\n", arrmin(val,pos));
+
+}
+
+
+/*FRANCESCO PATERNA*/
